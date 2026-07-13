@@ -1,12 +1,13 @@
 # QA evidence
 
-Verified locally on 2026-07-12 before opening the implementation PR.
+Verified locally on 2026-07-12 before opening the implementation PR and revalidated/hardened on 2026-07-13.
 
 ## Automated checks
 
 - `npm run validate`: PASS — HTML validation across all 13 routes.
-- `npm run test:static`: PASS — 13 pages, canonical metadata, one H1 per route, compliance boundary, Hoyack footer, two Netlify forms, required CRM tags, and all local links.
-- `npm test`: PASS — 13 routes at 1440×900 and 390×844; HTTP 200, one H1, mobile menu, newsletter fields, and zero console/page errors.
+- `npm run test:static`: PASS — 13 pages, canonical metadata, crawler-compatible 1200×630 PNG social metadata, noindexed confirmation pages, one H1 per route, compliance boundary, Hoyack footer, two Netlify forms, required CRM tags, and all local links.
+- `npm run test:dist`: PASS — allowlisted isolated deploy artifact with both Netlify form markers/actions/honeypots preserved and source-only repository paths excluded.
+- `npm test`: PASS — self-contained ephemeral server; 13 production-artifact routes at 1440×900 and 390×844; HTTP 200, one H1, mobile menu, newsletter fields, and zero console/page errors.
 - `npm audit --audit-level=moderate`: PASS — 0 known vulnerabilities.
 - Lighthouse, local production-equivalent static server: Performance 95; Accessibility 100; Best Practices 100; SEO 100.
 - All six external launch citations returned HTTP 200 after redirects.

@@ -1,6 +1,6 @@
 [build]
-  publish = "."
-  command = "npm run validate && npm run test:static"
+  publish = "dist"
+  command = "npm run validate && npm run test:static && npm run test:dist"
 
 [[headers]]
   for = "/*"

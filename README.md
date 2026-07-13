@@ -6,10 +6,10 @@ Production-ready static MVP for [marijuanafactcheck.com](https://marijuanafactch
 
 ```bash
 npm ci
-npm run serve
-# in another shell
 npm run test:all
 ```
+
+`npm run test:all` is self-contained: it validates source HTML, builds and inspects the isolated `dist/` artifact, then launches an ephemeral local server for Playwright. Use `npm run serve` only for manual preview.
 
 ## Public routes
 
