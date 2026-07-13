@@ -19,6 +19,11 @@ npm run test:all
 - `/newsletter/` spam-protected evidence-update signup
 - `/submit-claim/` spam-protected research queue
 - `/corrections/`, `/disclosure/`, `/privacy/`, `/terms/`
+- `/404.html` noindexed fallback for unknown routes
+
+## Production operations
+
+The allowlisted `dist/` artifact runs on Hoyack K3s behind the Shrubnet HTTPS edge. FormSubmit handles newsletter and claim intake; Plausible handles privacy-minimized aggregate analytics. Netlify remains an alternate static-host path through `netlify.toml`. See `docs/DEPLOYMENT.md` for deploy, verification, monitoring, and rollback.
 
 ## Boundaries
 
@@ -26,4 +31,4 @@ Adults 21+ only. No medical advice, legal advice, dosage guidance, dispensary af
 
 ## Governance
 
-Feature branches and pull requests only; CTO owns merge and production cutover. CMO acceptance and compliance review are required. See `docs/` for concept, CRO, analytics, content operations, architecture, deployment, monitoring, rollback, and review handoff.
+Feature branches and pull requests only; CTO owns merge and production cutover. The CMO owns content cadence and acceptance; CRO and compliance review the commercial and risk boundaries. See `docs/` for concept, revenue, analytics, content operations, architecture, deployment, monitoring, rollback, and review handoff.

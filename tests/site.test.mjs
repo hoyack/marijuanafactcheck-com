@@ -42,8 +42,9 @@ if (!base) {
       response.writeHead(200, { 'Content-Type': mime[path.extname(file)] || 'application/octet-stream' });
       response.end(body);
     } catch {
-      response.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
-      response.end('Not found');
+      const body = await readFile(path.join(root, '404.html'));
+      response.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
+      response.end(body);
     }
   });
   await new Promise((resolve, reject) => {
@@ -89,10 +90,34 @@ try {
   }
   assert.equal(await form.locator('input[name="source"]').getAttribute('value'), 'mfc');
   assert.equal(await form.locator('input[name="offer"]').getAttribute('value'), 'mfc-media');
+  assert.equal(await form.locator('form[name="mfc-newsletter"]').getAttribute('data-conversion'), 'newsletter_submit');
   await form.close();
+
+  const analytics = await browser.newPage();
+  await analytics.route('https://plausible.io/js/script.js', (route) => route.fulfill({ status: 200, contentType: 'application/javascript', body: '' }));
+  for (const [route, event] of [
+    ['/newsletter/thanks/', 'newsletter_requested'],
+    ['/submit-claim/thanks/', 'claim_submitted'],
+  ]) {
+    await analytics.goto(base + route, { waitUntil: 'networkidle' });
+    assert.deepEqual(await analytics.evaluate(() => (window.plausible.q || []).map((args) => args[0])), [], `${route} direct visit does not convert`);
+
+    await analytics.goto(`${base}${route}?submitted=1`, { waitUntil: 'networkidle' });
+    assert.deepEqual(await analytics.evaluate(() => (window.plausible.q || []).map((args) => args[0])), [event], `${route} guarded success converts once`);
+    assert.equal(new URL(analytics.url()).search, '', `${route} success marker removed`);
+
+    await analytics.reload({ waitUntil: 'networkidle' });
+    assert.deepEqual(await analytics.evaluate(() => (window.plausible.q || []).map((args) => args[0])), [], `${route} refresh does not reconvert`);
+  }
+
+  const notFoundResponse = await analytics.goto(`${base}/definitely-not-a-route`, { waitUntil: 'networkidle' });
+  assert.equal(notFoundResponse.status(), 404, 'unknown routes return 404');
+  assert.equal(await analytics.locator('h1').count(), 1, 'custom 404 has one h1');
+  assert.equal(await analytics.locator('meta[name="robots"]').getAttribute('content'), 'noindex,follow', 'custom 404 is noindexed');
+  await analytics.close();
 } finally {
   await browser.close();
   if (server) await new Promise((resolve) => server.close(resolve));
 }
 
-console.log(`Verified ${routes.length} routes at desktop/mobile, menu, forms, and zero console errors.`);
+console.log(`Verified ${routes.length} routes at desktop/mobile, guarded conversions, custom 404, menu, forms, and zero console errors.`);

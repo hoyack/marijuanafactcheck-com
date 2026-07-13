@@ -1,24 +1,23 @@
 # QA evidence
 
-Verified locally on 2026-07-12 before opening the implementation PR and revalidated/hardened on 2026-07-13.
+Verified locally before opening the implementation PR and revalidated after the production analytics/form cutover.
 
 ## Automated checks
 
-- `npm run validate`: PASS — HTML validation across all 13 routes.
-- `npm run test:static`: PASS — 13 pages, canonical metadata, crawler-compatible 1200×630 PNG social metadata, noindexed confirmation pages, one H1 per route, compliance boundary, Hoyack footer, two Netlify forms, required CRM tags, and all local links.
-- `npm run test:dist`: PASS — allowlisted isolated deploy artifact with both Netlify form markers/actions/honeypots preserved and source-only repository paths excluded.
-- `npm test`: PASS — self-contained ephemeral server; 13 production-artifact routes at 1440×900 and 390×844; HTTP 200, one H1, mobile menu, newsletter fields, and zero console/page errors.
-- `npm audit --audit-level=moderate`: PASS — 0 known vulnerabilities.
-- Lighthouse, local production-equivalent static server: Performance 95; Accessibility 100; Best Practices 100; SEO 100.
-- All six external launch citations returned HTTP 200 after redirects.
+- `npm run validate`: HTML validation across 13 public routes plus the custom 404 page.
+- `npm run test:static`: public pages, canonical metadata, 1200×630 PNG social metadata, noindexed confirmation/404 pages, one H1 per route, compliance boundaries, Hoyack footer, Plausible markup, FormSubmit delivery controls, guarded success markers, CRM tags, and local links.
+- `npm run test:dist`: allowlisted isolated deploy artifact; both FormSubmit actions, provider/secondary honeypots, guarded redirects, CRM tags, custom 404 page, and source-only exclusions.
+- `npm test`: 13 production-artifact routes at 1440×900 and 390×844; HTTP 200, one H1, mobile menu, form controls, guarded success-event behavior, real unknown-route 404 behavior, and zero console/page errors.
+- `npm audit --audit-level=moderate`: zero known vulnerabilities at the recorded verification.
+- All six launch evidence citations returned HTTP 200 after redirects at launch verification.
 
 ## Visual review
 
-Desktop and mobile full-page screenshots were reviewed for clipping, overlap, hierarchy, visible disclaimer treatment, responsive cards, CTA prominence, and tap-target sizing. The grid-based evidence-desk visual system rendered cleanly in both viewports.
+Desktop and mobile full-page screenshots were reviewed for clipping, overlap, hierarchy, visible disclaimer treatment, responsive cards, CTA prominence, and tap-target sizing.
 
 - `docs/screenshots/home-desktop.png`
 - `docs/screenshots/home-mobile.png`
 
-## Production-only gates
+## Production verification
 
-Netlify form detection/delivery, approved analytics configuration, custom-domain DNS preservation, production TLS, uptime monitoring, and rollback evidence require the CTO-owned deploy. Synthetic form tests must not contain health information.
+Production serves distinct routes over HTTPS with HSTS and restrictive security headers. Plausible markup and conversion hooks are live. Both forms POST to FormSubmit with `_honey`, a secondary honeypot, privacy consent, CRM tags, and explicit success redirects. Prometheus Blackbox monitoring and TLS-expiry alerts are active. DNS verification preserves IONOS MX and the combined Mailgun/IONOS SPF record. Authorized inbox owners must complete FormSubmit first-use activation if it remains pending.

@@ -5,6 +5,7 @@ const root = process.cwd();
 const out = path.join(root, 'dist');
 const publish = [
   ['index.html', 'index.html'],
+  ['404.html', '404.html'],
   ['claims', 'claims'],
   ['methodology', 'methodology'],
   ['sources', 'sources'],
