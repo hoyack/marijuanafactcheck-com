@@ -66,15 +66,15 @@ Reason: [Why — new evidence, source error, etc.]
 
 | Metric | Tool | Target |
 |--------|------|--------|
-| Monthly unique visitors | Plausible / GA | 5,000 (Month 3) |
-| Claims viewed per session | Plausible | 3+ |
+| Monthly unique visitors | TBD (Plausible planned) | 5,000 (Month 3) |
+| Claims viewed per session | TBD | 3+ |
 | Newsletter signup rate | Netlify Forms | 2% of visitors |
 | Claim submission rate | Netlify Forms | 5% of visitors |
-| Time on page | Plausible | 2+ min |
-| Bounce rate | Plausible | <50% |
+| Time on page | TBD | 2+ min |
+| Bounce rate | TBD | <50% |
 | Organic search traffic | Google Search Console | 60%+ of total |
-| Social referral traffic | Plausible | Growing monthly |
-| Returning visitors | Plausible | 20%+ (Month 6) |
+| Social referral traffic | TBD | Growing monthly |
+| Returning visitors | TBD | 20%+ (Month 6) |
 
 ### Content Performance
 
@@ -140,6 +140,6 @@ Use this data to:
 - Notification: Update newsletter and social if material
 
 ### Privacy
-- Analytics must be cookie-less or consent-exempt (Plausible)
+- Analytics must be cookie-less or consent-exempt (Plausible planned)
 - Newsletter: double opt-in (if using external provider)
 - No third-party trackers, ad pixels, or social media embeds that track
