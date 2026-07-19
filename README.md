@@ -83,3 +83,7 @@ See `docs/analytics-content-loop.md` for content cadence, review cycles, freshne
 ## License
 
 All content © Marijuana Fact Check. Code: MIT License.
+
+## Iteration
+
+This MVP is under CMO review. See PR for review gates and stakeholder notes.
