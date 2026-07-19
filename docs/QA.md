@@ -1,23 +1,37 @@
 # QA evidence
 
-Verified locally before opening the implementation PR and revalidated after the production analytics/form cutover.
-
 ## Automated checks
 
-- `npm run validate`: HTML validation across 13 public routes plus the custom 404 page.
-- `npm run test:static`: public pages, canonical metadata, 1200×630 PNG social metadata, noindexed confirmation/404 pages, one H1 per route, compliance boundaries, Hoyack footer, Plausible markup, FormSubmit delivery controls, guarded success markers, CRM tags, and local links.
-- `npm run test:dist`: allowlisted isolated deploy artifact; both FormSubmit actions, provider/secondary honeypots, guarded redirects, CRM tags, custom 404 page, and source-only exclusions.
-- `npm test`: 13 production-artifact routes at 1440×900 and 390×844; HTTP 200, one H1, mobile menu, form controls, guarded success-event behavior, real unknown-route 404 behavior, and zero console/page errors.
-- `npm audit --audit-level=moderate`: zero known vulnerabilities at the recorded verification.
-- All six launch evidence citations returned HTTP 200 after redirects at launch verification.
+### Static validation (`npm run test:static`)
+- All HTML pages present and complete (≥11 pages including custom 404)
+- Every page has: `<title>`, `<meta description>`, `<link rel="canonical">`, exactly one `<h1>`, Hoyack footer, and Plausible analytics script
+- No broken internal links (href/src pointing to missing files)
+- Required docs present: README.md, .env.example, netlify.toml, robots.txt, sitemap.xml, scripts/build.mjs, and all docs/*.md files
+- Build script includes 404.html in dist/ artifact
+- Netlify config publishes `dist/` and returns real 404 for unknown routes
 
-## Visual review
+### Browser validation (`npm test`)
+- All routes return correct HTTP status and page content
+- Home page: correct title, h1, CTA, and at least 3 grade-badged claims
+- Claims page: search input present, at least 4 claim cards
+- Newsletter form: correct FormSubmit action, honeypot fields, consent checkbox, source/offer hidden fields
+- Newsletter thank-you: conversion view guard with `data-conversion-view` and `data-conversion-param`
+- Submit-claim form: correct FormSubmit action, required fields, consent checkbox
+- 404 page: noindex robots meta, custom h1 text
+- Privacy page names FormSubmit and Plausible as data processors
+- Analytics script: Plausible queue initialized before custom events in main.js
 
-Desktop and mobile full-page screenshots were reviewed for clipping, overlap, hierarchy, visible disclaimer treatment, responsive cards, CTA prominence, and tap-target sizing.
+### CI
+- GitHub Actions workflow runs `npm run test:all` on push and PR
+- `test:all` = build + validate + static test + browser test (against dist/)
 
-- `docs/screenshots/home-desktop.png`
-- `docs/screenshots/home-mobile.png`
-
-## Production verification
-
-Production serves distinct routes over HTTPS with HSTS and restrictive security headers. Plausible markup and conversion hooks are live. Both forms POST to FormSubmit with `_honey`, a secondary honeypot, privacy consent, CRM tags, and explicit success redirects. Prometheus Blackbox monitoring and TLS-expiry alerts are active. DNS verification preserves IONOS MX and the combined Mailgun/IONOS SPF record. Authorized inbox owners must complete FormSubmit first-use activation if it remains pending.
+## Manual verification checklist
+- [ ] Netlify deploy successful; HTTPS confirmed
+- [ ] FormSubmit test: newsletter signup delivers email
+- [ ] FormSubmit test: claim submission delivers email
+- [ ] Plausible dashboard shows page views
+- [ ] All redirects work (trailing-slash, catch-all 404)
+- [ ] DNS: MX/TXT/DKIM/DMARC preserved
+- [ ] Mobile: responsive layout verified at 375px, 768px, 1024px
+- [ ] Keyboard navigation: all interactive elements reachable
+- [ ] Screen reader: landmark navigation works

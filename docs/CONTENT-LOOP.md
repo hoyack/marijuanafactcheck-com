@@ -1,31 +1,39 @@
-# Continuous content loop
+# Content operations
 
-## Ownership
-
-The CMO is the accountable content owner. The editor/researcher roles execute the queue; the CTO/on-call owns publish mechanics, availability, and rollback. Revenue Operations owns form intake routing under `docs/CRO.md`.
+## Content types
+1. **Claim evaluations:** structured evidence records with grade, confidence, sources, and review date
+2. **Corrections:** dated log entries when a grade or factual statement changes
+3. **Methodology updates:** versioned changes to the grading rubric or evaluation process
+4. **Newsletter editions:** monthly roundup + alerts for high-impact grade changes
 
 ## Cadence
+- New claim evaluations: target 2-4 per month at launch, scaling with audience and submission volume
+- Corrections: within 5 business days of confirmed new evidence
+- Newsletter: monthly roundup; immediate alert for grade changes of A or B claims
+- Methodology review: quarterly, with versioned changelog
 
-- Weekly: intake triage and source-link health check.
-- Biweekly: one new or materially refreshed claim record.
-- Monthly: evidence update and correction-log review.
-- Quarterly: high-risk health/legal record review and source-register audit.
-- Annually: all remaining records.
+## Sources
+Claims are identified from:
+1. Public submission queue (form intake)
+2. News media and social media monitoring
+3. Journalist and policy analyst requests
+4. Systematic literature review of high-impact cannabis studies
 
-## Workflow / approvals
+Priority: claims with widespread circulation, public health implications, or policy relevance.
 
-1. Editor records exact claim and scope.
-2. Researcher captures search trail and evidence table.
-3. Second reviewer checks source fit and grade.
-4. Medical-risk language review for health claims; jurisdiction/date check for legal claims.
-5. CMO checks clarity and owns final content approval; compliance/CTO gate publication mechanics.
-6. Publish with review date.
-7. Monitor corrections, source changes, and conversion quality.
+## Templates
+- Claim evaluation: grade badge, confidence bar, claim body, meta (source count, confidence label, last reviewed), linked source register
+- Correction: date, claim identifier, previous grade → new grade, explanation, supporting evidence
+- Newsletter: subject line format "[MFC] New evidence grade: [claim summary]" or "[MFC] Grade change: [claim] from [old] to [new]"
 
-## Record template
+## Approval points
+- New claim evaluations: editor review before publish
+- Grade changes: editor + methodology reviewer
+- Corrections: editor + original evaluator (if available)
+- Newsletter: editor review before send
 
-ID; exact claim; scope; grade; confidence; concise rationale; sources; conflicts/limits; reviewed date; next review; author; reviewer; disclosures; correction history.
-
-## Freshness SLO
-
-100% of critical records reviewed quarterly; 95% of all records within assigned window; broken primary-source links fixed within 5 business days; correction receipt within 2 business days.
+## Freshness metrics
+- Each claim record shows "Last reviewed" date
+- Claims unreviewed for >24 months are flagged with a staleness notice
+- Quarterly audit of all claim records for new evidence
+- Source register updated when new studies are cited

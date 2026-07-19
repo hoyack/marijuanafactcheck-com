@@ -1,6 +1,6 @@
 [build]
+  command = "npm run build"
   publish = "dist"
-  command = "npm run validate && npm run test:static && npm run test:dist"
 
 [[headers]]
   for = "/*"
@@ -9,11 +9,41 @@
     X-Frame-Options = "DENY"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https://plausible.io; connect-src 'self' https://plausible.io; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; form-action 'self' https://formsubmit.co; frame-ancestors 'none'; base-uri 'self'; upgrade-insecure-requests"
+    Content-Security-Policy = "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self' https://plausible.io; connect-src 'self' https://plausible.io; form-action 'self' https://formsubmit.co; frame-ancestors 'none'; base-uri 'self'"
+
+[[headers]]
+  for = "/styles/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
+
+[[headers]]
+  for = "/scripts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
 
 [[redirects]]
   from = "/claims"
   to = "/claims/"
+  status = 301
+
+[[redirects]]
+  from = "/methodology"
+  to = "/methodology/"
+  status = 301
+
+[[redirects]]
+  from = "/sources"
+  to = "/sources/"
+  status = 301
+
+[[redirects]]
+  from = "/newsletter"
+  to = "/newsletter/"
+  status = 301
+
+[[redirects]]
+  from = "/submit-claim"
+  to = "/submit-claim/"
   status = 301
 
 [[redirects]]

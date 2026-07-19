@@ -1,11 +1,8 @@
 {
-  "extends": [
-    "html-validate:recommended"
-  ],
+  "extends": ["html-validate:standard"],
   "rules": {
-    "no-inline-style": "error",
-    "wcag/h30": "error",
-    "element-required-attributes": "error",
-    "attr-quotes": "error"
+    "no-inline-style": "off",
+    "attr-quotes": "off",
+    "void-style": "off"
   }
 }

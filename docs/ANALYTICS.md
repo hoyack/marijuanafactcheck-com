@@ -1,11 +1,33 @@
-# Analytics operations
+# Analytics runbook
 
-Plausible is the approved privacy-minimized provider. Every public HTML page loads `https://plausible.io/js/script.js` with `data-domain="marijuanafactcheck.com"`. The content security policy permits only that analytics script and connection origin.
+## Platform
+Plausible Analytics (privacy-first, no cookies, no personal data). Script included on all public pages via `<script defer data-domain="marijuanafactcheck.com" src="https://plausible.io/js/script.js"></script>`.
 
-Custom events are derived from `data-conversion` values. Current intent events include `header_newsletter`, `newsletter_submit`, and `claim_submit`. The form intent events fire only after native browser validation passes. FormSubmit redirects successful requests with `?submitted=1`; the confirmation pages then emit the authoritative `newsletter_requested` or `claim_submitted` event and immediately remove the marker so refreshes do not duplicate conversions. Direct confirmation-page visits without the marker do not count. Future editorial surfaces may add `claim_open`, `methodology_open`, `newsletter_start`, and `sponsor_inquiry` after review.
+## Events tracked
 
-Never send claim text, form values, email addresses, health information, or free-text URL data as event properties. The only current custom property is the page path.
+### Page views
+Automatic for all public routes.
 
-Weekly funnel: unique landing sessions → intent events → authoritative requested/submitted events. Freshness metrics: records reviewed on schedule, median age since review, overdue high-risk records.
+### Custom conversion events
+- `newsletter_submit`: fired on newsletter form submit button click (intent signal, not authoritative)
+- `newsletter_subscribed`: authoritative — fires only on `/newsletter/thanks/` with `?subscribed=1` query param
+- `claim_submit`: fired on claim submission form submit (intent signal)
+- `claim_submitted`: authoritative — fires only on `/submit-claim/thanks/` with `?submitted=1` query param
+- `claims_viewed`: page view on `/claims/`
+- `methodology_viewed`: page view on `/methodology/`
 
-Operations: the CTO/on-call owns the Plausible site configuration; confirm `marijuanafactcheck.com` exists in the dashboard and review event delivery after deploy. Analytics failure must not block content or form operation.
+### Implementation
+Client script (`scripts/main.js`) initializes the Plausible queue and fires custom events. Conversion-view events are guarded: they require the specific query parameter to be present, preventing inflated counts from direct page loads or refreshes.
+
+## Dashboard
+- Public dashboard: not yet configured
+- Internal dashboard: Plausible shared link for CMO and CRO
+
+## Privacy
+Plausible does not use cookies, fingerprinting, or cross-site tracking. No personal data collected. Compliant with privacy notice.
+
+## Form delivery tracking
+FormSubmit is the production form endpoint. Delivery is tracked via:
+1. FormSubmit dashboard (delivery status per submission)
+2. Inbox confirmation (manual spot-check)
+3. Conversion event `newsletter_subscribed` or `claim_submitted` on thank-you page view

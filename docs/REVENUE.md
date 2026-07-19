@@ -1,11 +1,31 @@
-# Revenue model
+# Revenue brief
 
-The commercial source of truth is `docs/CRO.md`.
+## Current state (MVP launch)
+Self-funded by Hoyack. No external revenue, sponsorships, or grants. No paid products live.
 
-Approved MVP mechanisms:
+## Revenue hypotheses (gated behind audience and trust)
 
-- a free evidence-update newsletter that builds a qualified audience;
-- a future paid institutional evidence brief or research report;
-- clearly labeled, compliance-reviewed newsletter or institutional sponsorship.
+### 1. Sponsored research reports
+Institutional-grade evidence synthesis on specific cannabis topics (e.g., "Cannabinoids and Sleep: Evidence Review 2026"). Commissioned by research institutions, policy organizations, or healthcare systems. Clearly labeled as sponsored; editorial methodology unchanged.
 
-Editorial grades are never for sale. The MVP prohibits dispensary affiliates, product purchase CTAs, dosage advice, product rankings, pay-to-grade arrangements, unsupported medical marketing, and minor targeting. Any expansion requires CMO, CRO, and compliance review.
+### 2. Institutional access
+API access, bulk data export, and custom report generation for organizations that need structured cannabis evidence data. Gated behind demonstrated audience and citation authority.
+
+### 3. Grants and editorial sponsorships
+Foundation or government grants for public-health evidence synthesis. Editorial sponsorships from organizations aligned with evidence-based public health — labeled, separated from content decisions, and disclosed per the disclosure policy.
+
+### 4. Hard no
+- Cannabis product advertising or affiliate revenue
+- Brand sponsorships or endorsements
+- Paid claim evaluations or grade assignments
+- "Pay to play" source inclusion
+
+## Revenue triggers
+No revenue product launches before:
+- 50+ evaluated claims in the database
+- 3+ external citations by journalists or policy organizations
+- Demonstrated newsletter audience with measurable engagement
+- CTO, CMO, and compliance approval of any commercial offering
+
+## Measurement
+Track: newsletter subscribers, claim submissions, external citations, journalist inquiries, and institutional contact requests. Revenue decisions are evidence-gated, same as the claims.

@@ -1,23 +1,52 @@
-# Production deployment, monitoring, and rollback
+# Deployment runbook
 
-## Current production path
+## Hosting
+The `dist/` artifact is a self-contained static site deployable to:
+1. **Netlify** (primary): edge-first static hosting. `netlify.toml` configures build, headers, redirects, and CSP.
+2. **Hoyack K3s** (alternate): static file server behind the Shrubnet HTTPS edge.
 
-Production is the allowlisted `dist/` artifact on Hoyack K3s behind the Shrubnet edge. The approved artifact may be reconstructed from the open feature PR only when the commit SHA and artifact checks pass. Netlify remains an alternate static-host path through `netlify.toml`.
+## Netlify deployment
+```bash
+npm run build
+# Deploy dist/ via Netlify CLI or Git-connected auto-deploy
+```
+- Build command: `npm run build`
+- Publish directory: `dist`
+- Custom 404 served as real HTTP 404 (not a soft redirect to home)
+- All unknown routes return 404 via catch-all redirect in `netlify.toml`
 
-## Deploy
+## K3s deployment
+The Nginx configuration must replicate Netlify semantics:
+```
+location / {
+    try_files $uri $uri/ =404;
+    error_page 404 /404.html;
+}
+```
+- Serve `dist/` as the webroot
+- Unknown routes return HTTP 404 with the custom 404 page
+- The K3s config must not fall back to index.html for unknown routes
 
-1. Run `npm ci && npm run test:all && npm audit --audit-level=moderate`.
-2. Snapshot A/AAAA/CNAME and all MX/TXT/DKIM/DMARC records. Never alter mail DNS for a web deploy.
-3. Build `dist/` and verify the artifact contains only allowlisted public files.
-4. Package/apply the site ConfigMap and nginx/CSP configuration; roll only `site-marijuanafactcheck-com`. Nginx must use `try_files $uri $uri/ =404` with `error_page 404 /404.html`; do not route unknown paths to `/index.html`.
-5. Verify distinct 200 responses for all public routes, real 404 responses with the noindexed custom page for unknown/source-only paths, apex and `www` TLS, HSTS/security headers, Plausible markup, FormSubmit actions/honeypots/guarded redirects, and source-only-path isolation.
-6. Confirm MX and SPF still match the pre-deploy snapshot.
-7. Test forms only with synthetic non-health data and authorized inbox access. If FormSubmit first-use activation is pending, activate `hello@hoyack.com` before treating inbox delivery as operational.
+## DNS
+- Domain: marijuanafactcheck.com
+- Preserve existing MX, TXT, DKIM, and DMARC records
+- CTO snapshots DNS before any cutover
+- HTTPS enforced; HSTS considered post-stabilization
+
+## Verification (post-deploy)
+1. `curl -I https://marijuanafactcheck.com/` → 200, correct headers
+2. `curl -I https://marijuanafactcheck.com/nonexistent` → 404, custom 404 body
+3. FormSubmit test: submit newsletter form, confirm thank-you page and email delivery
+4. Plausible dashboard: confirm page views registering
+5. `robots.txt` and `sitemap.xml` accessible
+6. All policy pages load: privacy, terms, disclosure, corrections
 
 ## Monitoring
-
-Prometheus Blackbox probes `https://marijuanafactcheck.com` every 30 seconds with HTTP/TLS alerts and certificate-expiry warning. The CTO/on-call owns availability and delivery incidents. The CMO owns content freshness, source-link health, and the publishing cadence.
+- Uptime: Plausible or external monitor (e.g., Upptime)
+- Form delivery: manual check on first deploy, then spot-check monthly
+- Broken links: CI catches static link rot; external link checker for outbound source URLs
 
 ## Rollback
-
-Re-apply the last verified site ConfigMap/package and roll `site-marijuanafactcheck-com`; do not touch MX/TXT/DKIM/DMARC. Recheck public routes, TLS, headers, forms, analytics, and mail DNS. Disable the form endpoint if abuse or misdelivery is detected. Netlify deployments may use atomic deploy rollback when that hosting path is active.
+- Netlify: redeploy previous deploy from dashboard or CLI
+- K3s: `kubectl rollout undo` or restore previous `dist/` artifact
+- DNS: revert CNAME/A record to previous target; TTL-aware timing

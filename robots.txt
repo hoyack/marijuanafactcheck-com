@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
+Disallow: /submit-claim/thanks/
 Sitemap: https://marijuanafactcheck.com/sitemap.xml
