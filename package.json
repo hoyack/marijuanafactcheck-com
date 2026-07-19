@@ -1,0 +1,17 @@
+{
+  "name": "marijuanafactcheck-com",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "serve": "python3 -m http.server 4173",
+    "validate": "html-validate index.html 404.html claims/**/*.html methodology/**/*.html sources/**/*.html newsletter/**/*.html submit-claim/**/*.html privacy/**/*.html terms/**/*.html disclosure/**/*.html corrections/**/*.html",
+    "test": "node tests/site.test.mjs",
+    "test:static": "node tests/static.test.mjs",
+    "test:all": "npm run build && npm run validate && npm run test:static && SITE_DIR=dist npm test"
+  },
+  "devDependencies": {
+    "html-validate": "^10.4.0",
+    "playwright": "^1.55.0"
+  }
+}
