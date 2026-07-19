@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank You — Marijuana Fact Check</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="site-header" role="banner">
+    <div class="container">
+      <a href="/" class="logo" aria-label="Marijuana Fact Check home">
+        <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="4" fill="var(--color-primary)"/><text x="16" y="22" text-anchor="middle" fill="white" font-size="18" font-weight="bold">MF</text></svg>
+        <span>Marijuana Fact Check</span>
+      </a>
+    </div>
+  </header>
+
+  <main id="main-content" class="content-page">
+    <div class="container">
+      <article class="thank-you">
+        <h1>Thank You!</h1>
+        <p>Your submission has been received. We review every claim submitted and prioritize those with the widest public interest.</p>
+        <p>If you provided an email address, we'll notify you when a review is published.</p>
+        <a href="/" class="btn-primary">Back to Claims</a>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-disclaimer">
+        <p><strong>Medical Disclaimer:</strong> This site provides evidence ratings for informational purposes only.</p>
+      </div>
+      <p class="footer-credit">&copy; <span id="current-year"></span> Marijuana Fact Check.</p>
+    </div>
+  </footer>
+
+  <script>document.getElementById('current-year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
