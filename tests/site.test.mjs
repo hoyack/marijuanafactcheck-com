@@ -86,6 +86,27 @@ try {
   const homeGradeBadges = await page.$$eval('.grade-badge', els => els.length);
   assert.ok(homeGradeBadges >= 3, `home page should show at least 3 grade badges, got ${homeGradeBadges}`);
 
+  // HOY-266: prevent desktop overflow and low-contrast conversion controls.
+  for (const width of [1440,390]) {
+    await page.setViewportSize({width,height:900});
+    await page.goto(`${base}/`);
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `home has no overflow at ${width}`);
+    const ratios = await page.evaluate(() => {
+      const lum = color => {
+        const c = color.match(/[\d.]+/g).slice(0,3).map(Number).map(v => v/255).map(v => v <= .04045 ? v/12.92 : ((v+.055)/1.055)**2.4);
+        return .2126*c[0]+.7152*c[1]+.0722*c[2];
+      };
+      return ['.button.secondary','.disclaimer-banner strong'].map(selector => {
+        const e=document.querySelector(selector), s=getComputedStyle(e);
+        let p=e, bg=s.backgroundColor;
+        while(bg==='rgba(0, 0, 0, 0)' && p.parentElement){p=p.parentElement;bg=getComputedStyle(p).backgroundColor;}
+        const [a,b]=[lum(s.color),lum(bg)].sort((a,b)=>b-a);
+        return {selector,ratio:(a+.05)/(b+.05)};
+      });
+    });
+    for(const item of ratios)assert.ok(item.ratio>=4.5, `${item.selector} contrast ${item.ratio}`);
+  }
+
   // Claims page
   await page.goto(`${base}/claims/`, { waitUntil: 'networkidle' });
   const claimCards = await page.$$eval('[data-claim-card]', els => els.length);
@@ -97,15 +118,15 @@ try {
 
   // Newsletter form
   await page.goto(`${base}/newsletter/`, { waitUntil: 'networkidle' });
-  const newsletterForm = await page.$('form[action*="formsubmit.co"]');
-  assert.ok(newsletterForm, 'newsletter must use FormSubmit');
-  const honeypotFields = await page.$$eval('input[name="_honey"], input[name="bot-field"]', els => els.length);
-  assert.equal(honeypotFields, 2, 'newsletter form must have two honeypot fields');
+  const newsletterForm = await page.$('form[data-netlify="true"]');
+  assert.ok(newsletterForm, 'newsletter must use Netlify Forms');
+  const honeypotFields = await page.$$eval('input[name="bot-field"]', els => els.length);
+  assert.equal(honeypotFields, 1, 'newsletter form must have declared honeypot field');
 
   // Submit-claim form
   await page.goto(`${base}/submit-claim/`, { waitUntil: 'networkidle' });
-  const claimForm = await page.$('form[action*="formsubmit.co"]');
-  assert.ok(claimForm, 'submit-claim must use FormSubmit');
+  const claimForm = await page.$('form[data-netlify="true"]');
+  assert.ok(claimForm, 'submit-claim must use Netlify Forms');
 
   // Thank-you page conversion guards
   await page.goto(`${base}/newsletter/thanks/?subscribed=1`, { waitUntil: 'networkidle' });

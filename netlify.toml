@@ -9,7 +9,7 @@
     X-Frame-Options = "DENY"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
-    Content-Security-Policy = "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self' https://plausible.io; connect-src 'self' https://plausible.io; form-action 'self' https://formsubmit.co; frame-ancestors 'none'; base-uri 'self'"
+    Content-Security-Policy = "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self' https://plausible.io; connect-src 'self' https://plausible.io; form-action 'self'; frame-ancestors 'none'; base-uri 'self'"
 
 [[headers]]
   for = "/styles/*"

@@ -7,7 +7,7 @@ Marijuana Fact Check is a static HTML/CSS/JS site with no build-time framework. 
 - **HTML:** semantic, accessible, single `<h1>` per page, skip links, ARIA labels
 - **CSS:** single `styles/main.css` with custom properties, responsive breakpoints, reduced-motion support
 - **JS:** single `scripts/main.js` for mobile nav toggle, copyright year, conversion event guards, and claim search filter
-- **Forms:** FormSubmit (spam-protected with honeypot fields and consent checkboxes)
+- **Forms:** Netlify Forms (spam-protected with honeypot fields and consent checkboxes)
 - **Analytics:** Plausible (script loaded via defer, no cookies)
 - **Build:** `scripts/build.mjs` copies allowlisted files into isolated `dist/`
 
@@ -29,9 +29,9 @@ Marijuana Fact Check is a static HTML/CSS/JS site with no build-time framework. 
 ```
 
 ## Security
-- CSP: `default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self' https://plausible.io; connect-src 'self' https://plausible.io; form-action 'self' https://formsubmit.co; frame-ancestors 'none'; base-uri 'self'`
+- CSP: `default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self' https://plausible.io; connect-src 'self' https://plausible.io; form-action 'self'; frame-ancestors 'none'; base-uri 'self'`
 - No inline scripts or event handlers
-- Forms use honeypot fields (`_honey`, `bot-field`) for bot protection
+- Forms use honeypot fields (`bot-field`) for bot protection
 - No cookies, no localStorage, no third-party trackers beyond Plausible
 - Security headers: `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy: camera=(), microphone=(), geolocation=()`
 
@@ -50,3 +50,6 @@ Marijuana Fact Check is a static HTML/CSS/JS site with no build-time framework. 
 - Focus-visible outlines
 - `prefers-reduced-motion` support
 - Grade badges use text, not color alone
+
+## HOY-266 hosting gate
+This branch requires Netlify Forms detection and Netlify-hosted POST processing. A plain static K3s server cannot accept these forms. No deployment or hosted acceptance proof is included. Netlify form storage does not itself send the checklist or enroll newsletter subscribers; Growth/Revenue Operations must verify downstream fulfillment separately.

@@ -8,7 +8,7 @@
     "validate": "html-validate index.html 404.html claims/**/*.html methodology/**/*.html sources/**/*.html newsletter/**/*.html submit-claim/**/*.html privacy/**/*.html terms/**/*.html disclosure/**/*.html corrections/**/*.html",
     "test": "node tests/site.test.mjs",
     "test:static": "node tests/static.test.mjs",
-    "test:all": "npm run build && npm run validate && npm run test:static && SITE_DIR=dist npm test"
+    "test:all": "npm run build && npm run validate && npm run test:static && node tests/dist.test.mjs && SITE_DIR=dist npm test"
   },
   "devDependencies": {
     "html-validate": "^10.4.0",
