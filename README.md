@@ -23,7 +23,7 @@ npm run test:all
 
 ## Production operations
 
-The allowlisted `dist/` artifact runs on Hoyack K3s behind the Shrubnet HTTPS edge. FormSubmit handles newsletter and claim intake; Plausible handles privacy-minimized aggregate analytics. Netlify remains an alternate static-host path through `netlify.toml`. See `docs/DEPLOYMENT.md` for deploy, verification, monitoring, and rollback.
+This repair branch uses Netlify Forms for newsletter and claim intake and requires Netlify hosting with form detection enabled. The prior K3s static host cannot process native form POSTs. Hosted submission acceptance remains unverified. Plausible instrumentation is retained. See `docs/DEPLOYMENT.md` for deploy, verification, monitoring, and rollback.
 
 ## Boundaries
 

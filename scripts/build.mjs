@@ -18,4 +18,7 @@ for (const [source, target] of publish) {
   await mkdir(path.dirname(destination), { recursive: true });
   await cp(path.join(root, source), destination, { recursive: true });
 }
+for (const file of ['_headers', '_redirects']) {
+  await cp(path.join(root, 'netlify', file), path.join(out, file));
+}
 console.log(`Built isolated static artifact with ${publish.length} entries in dist/.`);

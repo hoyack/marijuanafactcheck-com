@@ -36,7 +36,7 @@ location / {
 ## Verification (post-deploy)
 1. `curl -I https://marijuanafactcheck.com/` → 200, correct headers
 2. `curl -I https://marijuanafactcheck.com/nonexistent` → 404, custom 404 body
-3. FormSubmit test: submit newsletter form, confirm thank-you page and email delivery
+3. Netlify Forms test: submit newsletter form, confirm thank-you page and email delivery
 4. Plausible dashboard: confirm page views registering
 5. `robots.txt` and `sitemap.xml` accessible
 6. All policy pages load: privacy, terms, disclosure, corrections
@@ -50,3 +50,8 @@ location / {
 - Netlify: redeploy previous deploy from dashboard or CLI
 - K3s: `kubectl rollout undo` or restore previous `dist/` artifact
 - DNS: revert CNAME/A record to previous target; TTL-aware timing
+
+## HOY-266 release gate — no production deploy authorized
+Enable automatic form detection in the approved Netlify site, then deploy only a non-production branch preview from the reviewed SHA. Verify detected form names and fields; submit uniquely tagged synthetic test data on that Netlify-hosted URL; record submission IDs and dashboard/API readback, final success URL, and notification/fulfillment evidence separately. A local HTTP 200, HTML contract, or success-page visit is not acceptance proof.
+
+Do not use the K3s static fallback above for this branch without a separately reviewed POST backend. Netlify Forms storage alone does not implement newsletter confirmation/enrollment or checklist delivery. CTO owns hosting and form detection; Growth/Revenue Operations owns fulfillment.
