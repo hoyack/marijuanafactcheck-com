@@ -1,0 +1,7 @@
+# Path-portable redirects. Targets must stay site-relative.
+/claims          /claims/          301
+/methodology     /methodology/     301
+/sources         /sources/         301
+/newsletter      /newsletter/      301
+/submit-claim    /submit-claim/    301
+/*               /404.html         404
